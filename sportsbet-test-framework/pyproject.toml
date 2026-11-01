@@ -1,0 +1,17 @@
+[project]
+name = "sportsbet-test-framework"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Jupiter", email = "ing.alejandroareiza@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+sportsbet-test-framework = "sportsbet_test_framework:main"
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"
