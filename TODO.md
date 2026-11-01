@@ -6,14 +6,14 @@
 - [x] Create repo
 - [ ] Test planning
   - [ ] Define test design technique
-  - [ ] Create test plan document
-  - [ ] Refine test plan
+  - [x] Create test plan document
+  - [x] Refine test plan
 - [ ] Test execution
-  - [ ] Create test execution report md file
+  - [x] Create test execution report md file
   - [ ] Perform test execution based on test plan
   - [ ] Perform exploratory testing
 - [ ] Bugs
-  - [ ] Create bug report md file
+  - [x] Create bug report md file
   - [ ] Report bugs
 - [ ] Automation
   - [ ] Build target automation framework
@@ -271,3 +271,35 @@ Guide for creating validation-based test cases.
 ### 5.1 Authentication
 ### 5.2 API Documentation
 ### 5.3 Endpoints
+
+## error guessing 
+
+- double-clicking `Place Bet` or retrying during `Placing...` (double charge, `409`)
+- stake values such as `0`, `-1`, `1.005`, `1,50`, `e`, spaces, very large numbers
+- balance and payout rounding with odds that have 2+ decimals
+- betting on past matches
+- stale balance after a bet, or after a refresh
+- currency or values in the API response that differ from the UI
+- odds filter with min > max or empty values
+
+
+## techa se techniques 
+**Test design techniques used**
+- **Boundary Value Analysis:** stake min/max (€0.99 / €1.00 / €100.00 / €100.01), precision (2 vs 3 decimals), stake vs balance.
+- **Equivalence Partitioning:** valid / invalid stake classes (numeric, non-numeric, negative, empty) and selections (`HOME`, `DRAW`, `AWAY`, invalid).
+- **State transition:** bet slip states (empty → selected → placing → success / error → empty).
+
+| Data | Values |
+|------|--------|
+| Valid stakes | `1.00`, `10`, `25.50`, `100.00` |
+| Boundary stakes | `0.99`, `1.00`, `1.01`, `99.99`, `100.00`, `100.01` |
+| Invalid stakes | empty, `0`, `-5`, `abc`, `1.005`, `1,50` |
+| Balance-related | a stake above the current balance (e.g. after reducing the balance) |
+| Selections | `HOME`, `DRAW`, `AWAY`, plus invalid values via the API (`home`, `WIN`, empty) |
+| Match IDs | a valid ID from the catalog, empty, unknown, and a past match |
+| User context | valid `x-user-id`, missing header, empty header |
+
+**Data reset:** before each test or session, call `POST /api/reset-balance` so the balance starts at €125.50 and results don't depend on earlier runs.
+
+
+**Note:** hard asserts guard the flow, soft asserts check the details.
