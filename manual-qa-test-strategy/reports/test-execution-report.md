@@ -27,7 +27,7 @@ BUG-09 was found in both scripted (TC-03) and exploratory testing, so it is coun
 |----|-------|----------|--------|------------|
 | [TC-01](../test-plan/test-plan-single-bet-placement.md#tc-01) | Place a valid single bet on an upcoming match | Critical | ❌ Fail | [BUG-02](bug-reports.md#bug-02), [BUG-03](bug-reports.md#bug-03), [BUG-04](bug-reports.md#bug-04), [BUG-05](bug-reports.md#bug-05) |
 | [TC-03](../test-plan/test-plan-single-bet-placement.md#tc-03) | Reject a bet when the stake exceeds the available balance | Critical | ❌ Fail | [BUG-09](bug-reports.md#bug-09) |
-| [TC-02](../test-plan/test-plan-single-bet-placement.md#tc-02) | Verify the API rejects a stake above the maximum | High | ❌ Fail | [BUG-06](bug-reports.md#bug-06), [BUG-07](bug-reports.md#bug-07) |
+| [TC-02](../test-plan/test-plan-single-bet-placement.md#tc-02) | Verify the API enforces the maximum stake | High | ❌ Fail | [BUG-06](bug-reports.md#bug-06), [BUG-07](bug-reports.md#bug-07) |
 | [TC-04](../test-plan/test-plan-single-bet-placement.md#tc-04) | Reject bets on past matches via the API | High | Not executed | - |
 | [TC-05](../test-plan/test-plan-single-bet-placement.md#tc-05) | Double submit does not place duplicate bets | High | Not executed | - |
 

@@ -16,9 +16,9 @@
   - [x] Create bug report md file
   - [x] Report bugs
 - [ ] Automation
-  - [ ] Build target automation framework
+  - [x] Build target automation framework
   - [ ] Automate E2E test
-  - [ ] Automate API test
+  - [x] Automate API test
   - [ ] Execute tests
 - [ ] Strategy & recommendations
   - [ ] Write strategy-and-recommendations.md
@@ -173,7 +173,7 @@ sporty-home-assignment/
 | Test app: https://qae-assignment-tau.vercel.app/ | CI/CD |
 | Chrome | Firefox, Safari |
 | | Parallel execution |
-| | Data-driven testing |
+| | Data-driven testing from external files (inline `pytest.mark.parametrize` is used for boundary values) |
 
 ---
 
@@ -183,6 +183,10 @@ Write a short document (`strategy-and-recommendations.md`) covering:
 - Why these 2 tests were selected for automation over other candidates
 - What was intentionally left manual-only and why
 - Top 2–3 recommendations if the project were to scale (CI/CD, additional test layers, data strategy, spec clarifications, etc.)
+
+**Recommendation ideas**
+- [ ] Test data management: move test data (e.g. stake boundaries) to JSON/YAML files loaded by a fixture, so new cases need no code change
+- [ ] BUG-06 is data-dependent (payout truncation only shows for some odds, e.g. 4.1): add a regression test with fixed test data (a known 4.1-odds match) to make it deterministic
 
 ---
 
