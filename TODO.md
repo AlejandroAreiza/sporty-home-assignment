@@ -4,17 +4,17 @@
 
 - [x] Understand the feature
 - [x] Create repo
-- [ ] Test planning
-  - [ ] Define test design technique
+- [x] Test planning
+  - [x] Define test design technique
   - [x] Create test plan document
   - [x] Refine test plan
-- [ ] Test execution
+- [x] Test execution
   - [x] Create test execution report md file
-  - [ ] Perform test execution based on test plan
-  - [ ] Perform exploratory testing
-- [ ] Bugs
+  - [x] Perform test execution based on test plan
+  - [x] Perform exploratory testing
+- [x] Bugs
   - [x] Create bug report md file
-  - [ ] Report bugs
+  - [x] Report bugs
 - [ ] Automation
   - [ ] Build target automation framework
   - [ ] Automate E2E test
