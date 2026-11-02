@@ -33,3 +33,6 @@ select = ["E", "F", "I", "UP", "B"]
 testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "--alluredir=allure-results"
+markers = [
+    "smoke: quick critical checks",
+]

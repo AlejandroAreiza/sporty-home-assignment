@@ -1,14 +1,10 @@
-import os
-from pathlib import Path
-
-from dotenv import load_dotenv
 from selenium.webdriver.remote.webdriver import WebDriver
 
-load_dotenv(Path(__file__).parents[2] / ".env")
+from config.settings import EnvVariables
 
 
 class SportBetPage:
-    BASE_URL = os.environ["QA_BASE_URL"]
+    BASE_URL = EnvVariables.QA_BASE_URL
 
     def __init__(self, driver: WebDriver):
         self.driver = driver

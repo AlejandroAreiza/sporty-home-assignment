@@ -1,9 +1,11 @@
 from allure import step
+import pytest
 
 
-class TestSanity:
+class TestSmoke:
     WEBAPP_TITLE = "Sports Betting QA"
 
+    @pytest.mark.smoke
     def test_open_sportbet_page_should_succeed(self, sportbet_page):
         with step("Verify sportbet page opened successfully"):
             with step("Verify sportbet page is in ready state"):
