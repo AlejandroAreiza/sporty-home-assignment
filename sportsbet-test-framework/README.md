@@ -30,9 +30,13 @@ Then set your values in `.env`:
 
 ## Run
 
-```bash
-uv run pytest
-```
+| Command | Runs |
+|---------|------|
+| `uv run pytest` | All tests |
+| `uv run pytest -m smoke` | Smoke tests: is the app up and stable |
+| `uv run pytest -m regression` | Regression tests, e.g. the stake limit |
+| `uv run pytest tests/api` | API tests only |
+| `uv run pytest tests/e2e` | UI (end-to-end) tests only |
 
 ## Report
 
@@ -49,13 +53,13 @@ uv run ruff format .
 
 ## Screenplay Pattern
 
-An **Actor** has **Abilities**, performs **Steps** made of **Actions**, and verifies the result with **Questions**.
+An **Actor** has **Abilities**, performs **Steps** made of **Actions**, and asserts the result with **Questions**.
 
 ```mermaid
 flowchart LR
     Actor -->|has| Abilities
     Actor -->|performs| Steps
-    Actor -->|verifies| Questions
+    Actor -->|asserts with| Questions
     Steps -->|made of| Actions
     Actions -->|use| Abilities
     Questions -->|use| Abilities
@@ -74,17 +78,17 @@ flowchart LR
 ### Example test
 
 ```python
-# conftest.py
+# conftest.py: the actor gets its ability here
 @pytest.fixture
 def api_user():
-    actor = Actor.named("Api User").who_can(CallAnApi.at(BASE_URL, headers={"x-user-id": USER_ID}))
+    actor = Actor.named("Api User").who_can(CallAnApi.at(QA_BASE_URL, {"x-user-id": QA_USER_ID}))
     yield actor
     actor.exit()
 
 
 # test: only says what the actor does
-def test_reset_balance_restores_initial_balance(api_user):
-    api_user.attempts_to(ResetBalance.to_initial_value())
-
-    api_user.verifies(TheBalance.in_the_api(), {"balance": 125.5, "currency": "EUR"})
+@pytest.mark.smoke
+def test_reset_the_balance_should_return_ok(api_user):
+    response = api_user.attempts_to(ResetBalance())
+    api_user.asserts(response.status_code, HTTPStatus.OK)
 ```

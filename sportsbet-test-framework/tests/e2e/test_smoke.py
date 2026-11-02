@@ -1,5 +1,5 @@
-from allure import step
 import pytest
+from allure import step
 
 
 class TestSmoke:

@@ -30,7 +30,6 @@ class Actor:
             ) from None
 
     def attempts_to(self, *performables: Performable) -> Any:
-        """Performs each step or action and returns the result of the last one."""
         result = None
         for performable in performables:
             with allure.step(f"{self.name} attempts to {performable}"):
@@ -41,9 +40,8 @@ class Actor:
         with allure.step(f"{self.name} asks for {question}"):
             return question.answered_by(self)
 
-    def verifies(self, actual: Question | Any, expected: Any) -> None:
-        """Checks a question's answer, or a value you already have, against the expected value."""
-        with allure.step(f"{self.name} verifies {actual} is {expected}"):
+    def asserts(self, actual: Question | Any, expected: Any) -> None:
+        with allure.step(f"{self.name} asserts {actual} is {expected}"):
             if isinstance(actual, Question):
                 actual = self.asks_for(actual)
             assert actual == expected, f"{self.name} expected {expected}, got {actual}"

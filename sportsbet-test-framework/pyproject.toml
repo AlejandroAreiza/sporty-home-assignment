@@ -34,5 +34,6 @@ testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "--alluredir=allure-results"
 markers = [
-    "smoke: quick critical checks",
+    "smoke: Check basic stability & accept/reject build",
+    "regression: Ensure new changes didn't break old features",
 ]
