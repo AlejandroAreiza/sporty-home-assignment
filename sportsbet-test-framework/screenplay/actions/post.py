@@ -11,9 +11,9 @@ from screenplay.interfaces import Performable
 
 
 class Post(Performable):
-    def __init__(self, path: str, body: dict[str, Any] | None = None) -> None:
+    def __init__(self, path: str) -> None:
         self.path = path
-        self.body = body
+        self.body: dict[str, Any] | None = None
 
     @classmethod
     def to(cls, path: str) -> Post:
