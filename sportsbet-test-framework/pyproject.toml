@@ -1,17 +1,38 @@
 [project]
 name = "sportsbet-test-framework"
 version = "0.1.0"
-description = "Add your description here"
+description = "Screenplay-based UI and API test framework for Single Bet Placement"
 readme = "README.md"
 authors = [
-    { name = "Jupiter", email = "ing.alejandroareiza@gmail.com" }
+    { name = "Alejandro Areiza", email = "ing.alejandroareiza@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "allure-pytest>=2.16.2",
+    "pytest>=9.2.0",
+    "python-dotenv>=1.2.4",
+    "requests>=2.34.2",
+    "selenium>=4.52.0",
+]
 
-[project.scripts]
-sportsbet-test-framework = "sportsbet_test_framework:main"
+[dependency-groups]
+dev = [
+    "ruff>=0.17.3",
+]
 
-[build-system]
-requires = ["uv_build>=0.13.6,<0.14.0"]
-build-backend = "uv_build"
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "--alluredir=allure-results"
+markers = [
+    "smoke: quick critical checks",
+]
