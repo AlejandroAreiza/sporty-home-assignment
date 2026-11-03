@@ -89,7 +89,8 @@ Coverage is measured against the feature specification and comes from two types 
 |---------|------|
 | Automation framework | [sportsbet-test-framework](https://github.com/AlejandroAreiza/sporty-home-assignment/tree/main/sportsbet-test-framework) (Python, Screenplay pattern) |
 | Reporting | Allure |
-| Task runner | Makefile |
+| Language and libraries | Python 3.14, Selenium WebDriver, pytest, requests |
+| Dependency management | uv |
 | Test management | Markdown files in this repository |
 
 ### 2.4 Test Type
@@ -178,8 +179,6 @@ Every bug found during scripted or exploratory testing is logged in [bug-reports
 | <a id="tc-03"></a>**TC-03** | Reject a bet when the stake exceeds the available balance | Critical | Automation candidate (UI + API) | Users must never bet money they don't have. If the backend doesn't check the balance, users build up debt and the business loses money. | 1. User is logged in.<br>2. Balance is reset (`POST /api/reset-balance`). | **Stake:** a value above the available balance, e.g. `100.00` when €20.00 is left. | 1. Place a bet with stake `100.00`.<br>2. Without refreshing, place another bet with stake `100.00`.<br>3. Call `GET /api/balance`. | 1. Bet is placed; balance = initial balance − €100.00.<br>2. Bet is rejected with **"Insufficient balance"** in the UI; the API returns status code `422`.<br>3. Status code `200`; balance is the same as after step 1 and never below €0.00. |
 | <a id="tc-04"></a>**TC-04** | Reject bets on past matches via the API | High | Automation candidate (API) | Betting on matches that have already been played lets users bet on known results, a direct financial and integrity risk. Testing it via the API proves the backend blocks it, even if the UI shows past matches. | 1. Balance is reset (`POST /api/reset-balance`).<br>2. `GET /api/matches` returns at least one match with `kickoffDate` before today. | **Header:** `x-user-id: candidate-ZrzbrQMxczHo`.<br>**Body:** `{"matchId": "<past match id>", "selection": "HOME", "stake": 10.00}`. | 1. Call `GET /api/matches` and take the `id` of a match with `kickoffDate` before today.<br>2. Call `POST /api/place-bet` with the test data body.<br>3. Call `GET /api/balance`. | 1. Status code `200` with the list of matches.<br>2. Status code `422`; the bet is not placed.<br>3. Status code `200`; balance is unchanged. |
 | <a id="tc-05"></a>**TC-05** | Double submit does not place duplicate bets | High | Manual Only | A double click must never charge the user twice. Manual Only: the result depends on click timing and network speed, so an automated check would be unreliable. | 1. User is logged in.<br>2. Balance is reset (`POST /api/reset-balance`). | **Selection:** `1`, `X` or `2`.<br>**Stake:** any value from €1.00 to €100.00 (e.g. `80.00`). | 1. Click the selection odds on an upcoming match.<br>2. Enter the stake in the bet slip.<br>3. Click `Place Bet` several times quickly while it shows `Placing...`.<br>4. Close the receipt and check the balance. | 1. Bet slip shows the selection.<br>2. `Place Bet` is enabled.<br>3. `Place Bet` is disabled while `Placing...`; only one bet is placed, and any extra request returns status code `409`.<br>4. `Balance = initial balance − stake`, deducted once. |
-
-**Why TC-05 is Manual Only:** the bug only appears when a second click lands while the first bet is still `Placing...`. That window changes with network speed and server load, so an automated check would pass or fail at random (flaky). A tester can slow the network in DevTools, retry until the issue shows, and record evidence (screen recording and Network tab). The backend part (parallel requests → one `200`, the rest `409`) is a candidate for a future API test.
 
 **Requirements Traceability Matrix**
 

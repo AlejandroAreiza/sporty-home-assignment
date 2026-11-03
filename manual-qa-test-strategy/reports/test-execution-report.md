@@ -16,8 +16,8 @@ Results of the test execution sessions defined in the [Test Plan](../test-plan/t
 | Activity | Executed | Passed | Failed | Not executed | Bugs found |
 |----------|----------|--------|--------|--------------|------------|
 | Scripted testing | 3 test cases | 0 | 3 | 2 | 7 |
-| Exploratory testing | 9 checks | 6 | 3 | - | 3 |
-| **Total** | | | | | **9 unique bugs** (2 Critical, 5 High, 2 Low) |
+| Exploratory testing | 10 checks | 6 | 4 | - | 4 |
+| **Total** | | | | | **10 unique bugs** (3 Critical, 5 High, 2 Low) |
 
 BUG-09 was found in both scripted (TC-03) and exploratory testing, so it is counted once in the total.
 
@@ -37,6 +37,7 @@ BUG-09 was found in both scripted (TC-03) and exploratory testing, so it is coun
 
 | Area | Layer | What was checked | Result | Bugs Found |
 |------|-------|------------------|--------|------------|
+| Past matches | API + UI | Check whether past matches are listed and can be bet on (`GET /api/matches`, then `POST /api/place-bet` on a past match) | ❌ Fail: 88 of 103 matches are past, they show as **PAST** with clickable odds, and a bet on one is accepted | [BUG-10](bug-reports.md#bug-10) |
 | Balance reset | API + UI | Reset the balance and compare the response with `GET /api/balance` and the header | ❌ Fail | [BUG-01](bug-reports.md#bug-01) |
 | Date filter | UI | Filter the match list by a single date | ✅ Pass | - |
 | Odds filter | UI | Filter the match list by an odds range | ✅ Pass | - |
@@ -46,3 +47,27 @@ BUG-09 was found in both scripted (TC-03) and exploratory testing, so it is coun
 | Single selection only | UI | Select odds on one match, then on another match | ✅ Pass: only one selection at a time; no multi-selection allowed | - |
 | Remove selection | UI | Remove the selection from the bet slip (`x` and `Remove All`) | ✅ Pass: the selection is cleared from the bet slip and the match list | - |
 | Repeated bets | API | Send several `POST /api/place-bet` requests (`stake: 100`) rapidly, then slowly one after another | ❌ Fail: rapid requests are cancelled by the API client (`REQUEST_CANCELLED`), so they never reach the server. Slow requests are all accepted: 7 × `200 OK` with `stake: 100` in about 12 seconds, far more than the €120.00 balance allows| [BUG-09](bug-reports.md#bug-09) |
+
+## Automated Test Results
+
+Results of the [automation framework](../../sportsbet-test-framework/README.md) runs.
+
+| Test | Layer | Status | Bugs caught |
+|------|-------|--------|-------------|
+| [TC-01](../test-plan/test-plan-single-bet-placement.md#tc-01) Place a valid single bet on an upcoming match | E2E UI | ❌ Fail | [BUG-02](bug-reports.md#bug-02), [BUG-03](bug-reports.md#bug-03), [BUG-04](bug-reports.md#bug-04) |
+| [TC-02](../test-plan/test-plan-single-bet-placement.md#tc-02) Verify the API enforces the maximum stake: `at-max` | API | ❌ Fail | [BUG-07](bug-reports.md#bug-07) ([BUG-06](bug-reports.md#bug-06) only for some odds) |
+| [TC-02](../test-plan/test-plan-single-bet-placement.md#tc-02) Verify the API enforces the maximum stake: `above-max` | API | ✅ Pass | - |
+
+**Allure report:** 3 test runs, 1 passed and 2 failed (33.33% pass rate).
+
+![Allure report overview](evidence/allure-overview.png)
+
+![Allure suites](evidence/allure-suites.png)
+
+**TC-01:** every step runs. The soft asserts collect 3 failures (receipt team order, receipt payout, header balance), which match BUG-02, BUG-03 and BUG-04.
+
+![TC-01 failure details in Allure](evidence/allure-tc-01-failure.png)
+
+**TC-02 `at-max`:** the bet is accepted (200) and the balance is updated, but the soft assert on the response fails because the currency is `USD` instead of `EUR` (BUG-07).
+
+![TC-02 at-max failure details in Allure](evidence/allure-tc-02-failure.png)
