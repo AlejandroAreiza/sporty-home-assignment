@@ -10,8 +10,9 @@ from screenplay.ui import BetSlip, Header, Receipt
 
 class TestPlaceBet:
     """TC-01: a user can place a valid single bet on an upcoming match through the UI.
-    Why this test: it is the core money flow and the main user journey. If the receipt
-    does not match the bet or the stake is not deducted, users lose money or trust.
+    Why this test: It is the core money flow and the main user journey. 
+    It checks every step a user sees (bet slip, stake, Place Bet, receipt, balance), 
+    so one test protects the most business value. It catches 3 Critical/High bugs.
     """
 
     @pytest.mark.regression
