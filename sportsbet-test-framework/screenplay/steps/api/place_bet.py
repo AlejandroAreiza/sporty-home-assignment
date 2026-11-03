@@ -3,7 +3,7 @@ from __future__ import annotations
 import requests
 
 from config.endpoints import Endpoints
-from screenplay.actions import Post
+from screenplay.actions.api import Post
 from screenplay.actor import Actor
 from screenplay.interfaces import Performable
 from screenplay.models import Selection
@@ -15,7 +15,7 @@ class PlaceBet(Performable):
         self.selection: Selection = Selection.HOME
         self.stake: float | None = None
 
-    def with_match_id(self, match_id: str) -> PlaceBet:
+    def on_match(self, match_id: str) -> PlaceBet:
         self.match_id = match_id
         return self
 

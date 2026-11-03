@@ -12,23 +12,20 @@ from screenplay.interfaces import Question
 
 class TheMatches(Question):
     def __init__(self) -> None:
-        self.predicate = lambda match: True
-        self.only_first = False
+        self.only_upcoming = False
 
     def upcoming(self) -> TheMatches:
-        today = date.today().isoformat()
-        self.predicate = lambda match: match["kickoffDate"] >= today
-        return self
-
-    def first(self) -> TheMatches:
-        self.only_first = True
+        self.only_upcoming = True
         return self
 
     def __str__(self) -> str:
-        return "the matches"
+        return "the upcoming matches" if self.only_upcoming else "the matches"
 
-    def answered_by(self, actor: Actor) -> Any:
+    def answered_by(self, actor: Actor) -> list[dict[str, Any]]:
         response = actor.ability_to(CallAnApi).send(HTTPMethod.GET, Endpoints.MATCHES)
         response.raise_for_status()
-        matches = [match for match in response.json() if self.predicate(match)]
-        return matches[0] if self.only_first else matches
+        matches = response.json()
+        if self.only_upcoming:
+            today = date.today().isoformat()
+            matches = [match for match in matches if match["kickoffDate"] >= today]
+        return matches

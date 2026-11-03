@@ -1,7 +1,7 @@
 import requests
 
 from config.endpoints import Endpoints
-from screenplay.actions import Post
+from screenplay.actions.api import Post
 from screenplay.actor import Actor
 from screenplay.interfaces import Performable
 
