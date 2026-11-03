@@ -17,6 +17,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pytest-rerunfailures>=16.7",
     "ruff>=0.17.3",
 ]
 
@@ -32,8 +33,10 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-addopts = "--alluredir=allure-results"
+addopts = "--alluredir=allure-results --reruns 0"
 markers = [
     "smoke: Check basic stability & accept/reject build",
     "regression: Ensure new changes didn't break old features",
+    "api: Design for api tests",
+    "ui: Design for ui tests",
 ]

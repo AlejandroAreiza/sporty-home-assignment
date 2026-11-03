@@ -187,7 +187,8 @@ Write a short document (`strategy-and-recommendations.md`) covering:
 **Recommendation ideas**
 - [ ] Test data management: move test data (e.g. stake boundaries) to JSON/YAML files loaded by a fixture, so new cases need no code change
 - [ ] BUG-06 is data-dependent (payout truncation only shows for some odds, e.g. 4.1): add a regression test with fixed test data (a known 4.1-odds match) to make it deterministic
-
+- [ ] make files
+- [ ] video in allure report
 ---
 
 # Feature Specification: Single Bet Placement

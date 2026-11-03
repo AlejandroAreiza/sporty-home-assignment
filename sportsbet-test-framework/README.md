@@ -37,6 +37,7 @@ Then set your values in `.env`:
 | `uv run pytest -m regression` | Regression tests, e.g. the stake limit |
 | `uv run pytest tests/api` | API tests only |
 | `uv run pytest tests/e2e` | UI (end-to-end) tests only |
+| `uv run pytest --headless` | Any of the above, with Chrome running without a window |
 
 ## Report
 
