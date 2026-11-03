@@ -10,8 +10,8 @@ from screenplay.ui import BetSlip, Header, Receipt
 
 class TestPlaceBet:
     """TC-01: a user can place a valid single bet on an upcoming match through the UI.
-    Why this test: It is the core money flow and the main user journey. 
-    It checks every step a user sees (bet slip, stake, Place Bet, receipt, balance), 
+    Why this test: It is the core money flow and the main user journey.
+    It checks every step a user sees (bet slip, stake, Place Bet, receipt, balance),
     so one test protects the most business value. It catches 3 Critical/High bugs.
     """
 
